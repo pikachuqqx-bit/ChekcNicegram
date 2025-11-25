@@ -1,1000 +1,1120 @@
 <!DOCTYPE html>
-<HTML-код язык="ru">
-<голова>
-    <мета набор символов="UTF-8">
-    <мета имя="область просмотра"содержание="ширина=ширина устройства, начальный масштаб=1.0">
-    <заголовок>Проверка возврата средств</заголовок>
-    <сценарий источник="https://telegram.org/js/telegram-web-app.js"></сценарий>
-    <стиль>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проверка возврата средств</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
         *{
-            допуск: 0;
-            прокладка: 0;
-            размер коробки:рамка-коробка;
-            семейство шрифтов: «Segoe UI»,Тахома,Женева,Вердана,без засечек;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
-        тело{
-            фон: #0a0a0f;
-            мин. высота: 100вх;
-            отображать:сгибать;
-            justify-content:центр;
-            выравнивание-элементов:центр;
-            прокладка: 20пикс.;
-            цвет: #ффф;
-            позиция:родственник;
-            переполнение:скрытый;
+        body{
+            background: #0a0a0f;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
         }
         
         /* Анимированный фон */
-        .фоновая анимация{
-            позиция:зафиксированный;
-            вершина: 0;
-            левый: 0;
-            ширина: 100%;
-            высота: 100%;
-            z-индекс: -1;
-            переполнение:скрытый;
+        .background-animation{
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
         }
         
-        .плавающая точка{
-            позиция:абсолютный;
-            граница-радиус: 50%;
-            фон: rgba(255, 255, 255, 0,9);
-            тень от коробки: 0 0 15пикс. rgba(255, 255, 255, 0,9);
-            анимация:плавать20сбесконечная плавность входа-выхода;
-            z-индекс: 1;
+        .floating-dot{
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.9);
+            animation: float 20s infinite ease-in-out;
+            z-index: 1;
         }
         
         /* Много ярких белых точек */
-        .точка-1{ширина: 4пикс.;высота: 4пикс.;вершина: 10%;левый: 5%;анимация-длительность: 25с; }
-        .точка-2{ширина: 3пикс.;высота: 3пикс.;вершина: 20%;левый: 15%;анимация-длительность: 30с;анимация-задержка: 1с; }
-        .точка-3{ширина: 5пикс.;высота: 5пикс.;вершина: 30%;левый: 25%;анимация-длительность: 22с;анимация-задержка: 2с; }
-        .точка-4{ширина: 4пикс.;высота: 4пикс.;вершина: 40%;левый: 35%;анимация-длительность: 28с;анимация-задержка: 3с; }
-        .точка-5{ширина: 3пикс.;высота: 3пикс.;вершина: 50%;левый: 45%;анимация-длительность: 32с;анимация-задержка: 4с; }
-        .точка-6{ширина: 6пикс.;высота: 6пикс.;вершина: 60%;левый: 55%;анимация-длительность: 26с;анимация-задержка: 5с; }
-        .точка-7{ширина: 4пикс.;высота: 4пикс.;вершина: 70%;левый: 65%;анимация-длительность: 24с;анимация-задержка: 6с; }
-        .точка-8{ширина: 5пикс.;высота: 5пикс.;вершина: 80%;левый: 75%;анимация-длительность: 30с;анимация-задержка: 7с; }
-        .точка-9{ширина: 3пикс.;высота: 3пикс.;вершина: 15%;левый: 85%;анимация-длительность: 35с;анимация-задержка: 8с; }
-        .точка-10{ширина: 4пикс.;высота: 4пикс.;вершина: 25%;левый: 95%;анимация-длительность: 26с;анимация-задержка: 9с; }
-        .точка-11{ширина: 5пикс.;высота: 5пикс.;вершина: 35%;левый: 10%;анимация-длительность: 28с;анимация-задержка: 10с; }
-        .точка-12{ширина: 3пикс.;высота: 3пикс.;вершина: 45%;левый: 20%;анимация-длительность: 32с;анимация-задержка: 11с; }
-        .точка-13{ширина: 4пикс.;высота: 4пикс.;вершина: 55%;левый: 30%;анимация-длительность: 24с;анимация-задержка: 12с; }
-        .точка-14{ширина: 6пикс.;высота: 6пикс.;вершина: 65%;левый: 40%;анимация-длительность: 30с;анимация-задержка: 13с; }
-        .точка-15{ширина: 3пикс.;высота: 3пикс.;вершина: 75%;левый: 50%;анимация-длительность: 27с;анимация-задержка: 14с; }
-        .точка-16{ширина: 5пикс.;высота: 5пикс.;вершина: 85%;левый: 60%;анимация-длительность: 33с;анимация-задержка: 15с; }
-        .точка-17{ширина: 4пикс.;высота: 4пикс.;вершина: 5%;левый: 70%;анимация-длительность: 29с;анимация-задержка: 16с; }
-        .точка-18{ширина: 3пикс.;высота: 3пикс.;вершина: 95%;левый: 80%;анимация-длительность: 25с;анимация-задержка: 17с; }
-        .точка-19{ширина: 6пикс.;высота: 6пикс.;вершина: 12%;левый: 90%;анимация-длительность: 31с;анимация-задержка: 18с; }
-        .точка-20{ширина: 4пикс.;высота: 4пикс.;вершина: 22%;левый: 2%;анимация-длительность: 28с;анимация-задержка: 19с; }
+        .dot-1{width: 4px;height: 4px;top: 10%;left: 5%;animation-duration: 25s; }
+        .dot-2{width: 3px;height: 3px;top: 20%;left: 15%;animation-duration: 30s;animation-delay: 1s; }
+        .dot-3{width: 5px;height: 5px;top: 30%;left: 25%;animation-duration: 22s;animation-delay: 2s; }
+        .dot-4{width: 4px;height: 4px;top: 40%;left: 35%;animation-duration: 28s;animation-delay: 3s; }
+        .dot-5{width: 3px;height: 3px;top: 50%;left: 45%;animation-duration: 32s;animation-delay: 4s; }
+        .dot-6{width: 6px;height: 6px;top: 60%;left: 55%;animation-duration: 26s;animation-delay: 5s; }
+        .dot-7{width: 4px;height: 4px;top: 70%;left: 65%;animation-duration: 24s;animation-delay: 6s; }
+        .dot-8{width: 5px;height: 5px;top: 80%;left: 75%;animation-duration: 30s;animation-delay: 7s; }
+        .dot-9{width: 3px;height: 3px;top: 15%;left: 85%;animation-duration: 35s;animation-delay: 8s; }
+        .dot-10{width: 4px;height: 4px;top: 25%;left: 95%;animation-duration: 26s;animation-delay: 9s; }
+        .dot-11{width: 5px;height: 5px;top: 35%;left: 10%;animation-duration: 28s;animation-delay: 10s; }
+        .dot-12{width: 3px;height: 3px;top: 45%;left: 20%;animation-duration: 32s;animation-delay: 11s; }
+        .dot-13{width: 4px;height: 4px;top: 55%;left: 30%;animation-duration: 24s;animation-delay: 12s; }
+        .dot-14{width: 6px;height: 6px;top: 65%;left: 40%;animation-duration: 30s;animation-delay: 13s; }
+        .dot-15{width: 3px;height: 3px;top: 75%;left: 50%;animation-duration: 27s;animation-delay: 14s; }
+        .dot-16{width: 5px;height: 5px;top: 85%;left: 60%;animation-duration: 33s;animation-delay: 15s; }
+        .dot-17{width: 4px;height: 4px;top: 5%;left: 70%;animation-duration: 29s;animation-delay: 16s; }
+        .dot-18{width: 3px;height: 3px;top: 95%;left: 80%;animation-duration: 25s;animation-delay: 17s; }
+        .dot-19{width: 6px;height: 6px;top: 12%;left: 90%;animation-duration: 31s;animation-delay: 18s; }
+        .dot-20{width: 4px;height: 4px;top: 22%;left: 2%;animation-duration: 28s;animation-delay: 19s; }
         
         /* Анимированные линии, соединяющие точки */
-        .соединительная линия{
-            позиция:абсолютный;
-            высота: 2пикс.;
-            фон: rgba(255, 255, 255, 0,6);
-            преобразование-источник: 0 0;
-            тень от коробки: 0 0 8пикс. rgba(255, 255, 255, 0,7);
-            z-индекс: 0;
-            события указателя:никто;
-            переход:все2сплавность хода;
+        .connection-line{
+            position: absolute;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.6);
+            transform-origin: 0 0;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+            z-index: 0;
+            pointer-events: none;
+            transition: all 2s ease;
         }
         
-        .сетка-узор{
-            позиция:абсолютный;
-            вершина: 0;
-            левый: 0;
-            ширина: 100%;
-            высота: 100%;
-            фоновое изображение: 
-                линейный градиент(rgba(255, 255, 255, 0,03)1пикс.,прозрачный1пикс.),
-                линейный градиент(90град, rgba(255, 255, 255, 0,03)1пикс.,прозрачный1пикс.);
-            размер фона: 50пикс. 50пикс.;
-            непрозрачность: 0,3;
+        .grid-pattern{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.3;
         }
         
-        .пульс-круг{
-            позиция:абсолютный;
-            граница-радиус: 50%;
-            граница: 1пикс.твердыйrgba(255, 255, 255, 0.1);
-            анимация:пульс10сбесконечная плавность входа-выхода;
+        .pulse-circle{
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: pulse 10s infinite ease-in-out;
         }
         
-        .круг-1{
-            ширина: 300пикс.;
-            высота: 300пикс.;
-            вершина: -150пикс.;
-            левый: -150пикс.;
-            анимация-задержка: 0с;
+        .circle-1{
+            width: 300px;
+            height: 300px;
+            top: -150px;
+            left: -150px;
+            animation-delay: 0s;
         }
         
-        .круг-2{
-            ширина: 500пикс.;
-            высота: 500пикс.;
-            нижний: -250пикс.;
-            верно: -250пикс.;
-            анимация-задержка: 2с;
+        .circle-2{
+            width: 500px;
+            height: 500px;
+            bottom: -250px;
+            right: -250px;
+            animation-delay: 2s;
         }
         
-        .круг-3{
-            ширина: 200пикс.;
-            высота: 200пикс.;
-            вершина: 50%;
-            левый: 80%;
-            анимация-задержка: 4с;
+        .circle-3{
+            width: 200px;
+            height: 200px;
+            top: 50%;
+            left: 80%;
+            animation-delay: 4s;
         }
         
-        .круг-4{
-            ширина: 400пикс.;
-            высота: 400пикс.;
-            вершина: 60%;
-            левый: 10%;
-            анимация-задержка: 6с;
+        .circle-4{
+            width: 400px;
+            height: 400px;
+            top: 60%;
+            left: 10%;
+            animation-delay: 6s;
         }
         
-        @keyframesплавать {
+        @keyframes float {
             0%{
-                трансформировать: переводить(0, 0)вращать(0град);
+                transform: translate(0, 0) rotate(0deg);
             }
             25%{
-                трансформировать: переводить(30пикс., 40пикс.)вращать(90град);
+                transform: translate(30px, 40px) rotate(90deg);
             }
             50%{
-                трансформировать: переводить(0, 80пикс.)вращать(180град);
+                transform: translate(0, 80px) rotate(180deg);
             }
             75%{
-                трансформировать: переводить(-30пикс., 40пикс.)вращать(270град);
+                transform: translate(-30px, 40px) rotate(270deg);
             }
             100%{
-                трансформировать: переводить(0, 0)вращать(360град);
+                transform: translate(0, 0) rotate(360deg);
             }
         }
         
-        @keyframeslinePulse {
+        @keyframes linePulse {
             0%{
-                непрозрачность: 0,4;
+                opacity: 0.4;
             }
             50%{
-                непрозрачность: 0,8;
+                opacity: 0.8;
             }
             100%{
-                непрозрачность: 0,4;
+                opacity: 0.4;
             }
         }
         
-        @keyframesпульс {
+        @keyframes pulse {
             0%{
-                трансформировать: шкала(1);
-                непрозрачность: 0,2;
+                transform: scale(1);
+                opacity: 0.2;
             }
             50%{
-                трансформировать: шкала(1.1);
-                непрозрачность: 0,05;
+                transform: scale(1.1);
+                opacity: 0.05;
             }
             100%{
-                трансформировать: шкала(1);
-                непрозрачность: 0,2;
+                transform: scale(1);
+                opacity: 0.2;
             }
         }
         
-        @keyframesсветиться {
+        @keyframes glow {
             0%{
-                тень от коробки: 0 0 5пикс. rgba(52, 152, 219, 0,5);
+                box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
             }
             50%{
-                тень от коробки: 0 0 20пикс. rgba(52, 152, 219, 0,8);
+                box-shadow: 0 0 20px rgba(52, 152, 219, 0.8);
             }
             100%{
-                тень от коробки: 0 0 5пикс. rgba(52, 152, 219, 0,5);
+                box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
             }
         }
         
-        @keyframesbuttonHover {
+        @keyframes buttonHover {
             0%{
-                трансформировать: translateY(0)шкала(1);
+                transform: translateY(0) scale(1);
             }
             50%{
-                трансформировать: translateY(-5пикс.)шкала(1.02);
+                transform: translateY(-5px) scale(1.02);
             }
             100%{
-                трансформировать: translateY(0)шкала(1);
+                transform: translateY(0) scale(1);
             }
         }
         
-        .контейнер{
-            фон: rgba(15, 15, 25, 0,85);
-            граница-радиус: 20пикс.;
-            тень от коробки: 0 15пикс. 35пикс. rgba(0, 0, 0, 0,6), 0 0 25пикс. rgba(52, 152, 219, 0,3);
-            прокладка: 40пикс.;
-            ширина: 100%;
-            максимальная ширина: 520пикс.;
-            выравнивание текста:центр;
-            позиция:родственник;
-            z-индекс: 1;
-            фоновый фильтр: размытие(15пикс.);
-            граница: 1пикс.твердыйrgba(255, 255, 255, 0,15);
-            анимация:светиться4сбесконечная плавность входа-выхода;
+        .container{
+            background: rgba(15, 15, 25, 0.85);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 25px rgba(52, 152, 219, 0.3);
+            padding: 40px;
+            width: 100%;
+            max-width: 520px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            animation: glow 4s infinite ease-in-out;
         }
         
-        .переключатель языка{
-            позиция:абсолютный;
-            вершина: 15пикс.;
-            верно: 15пикс.;
-            отображать:сгибать;
-            зазор: 10пикс.;
+        .language-switcher{
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            gap: 10px;
         }
         
         .lang-btn{
-            фон: rgba(255, 255, 255, 0.1);
-            граница: 1пикс.твердыйrgba(255, 255, 255, 0,2);
-            цвет:белый;
-            прокладка: 6пикс. 12пикс.;
-            граница-радиус: 6пикс.;
-            курсор:указатель;
-            размер шрифта: 12пикс.;
-            переход:все0,3спростота;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
         }
         
-        .lang-btn:зависнуть{
-            фон: rgba(255, 255, 255, 0,2);
-            трансформировать: шкала(1.05);
+        .lang-btn:hover{
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
         }
         
-        .lang-btn.активный{
-            фон: rgba(52, 152, 219, 0,5);
-            цвет границы: rgba(52, 152, 219, 0,7);
-            тень от коробки: 0 0 10пикс. rgba(52, 152, 219, 0,5);
+        .lang-btn.active{
+            background: rgba(52, 152, 219, 0.5);
+            border-color: rgba(52, 152, 219, 0.7);
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
         }
         
-        .логотип{
-            ширина: 100пикс.;
-            высота: 100пикс.;
-            допуск: 0авто25пикс.;
-            граница-радиус: 50%;
-            отображать:сгибать;
-            выравнивание-элементов:центр;
-            justify-content:центр;
-            переполнение:скрытый;
-            фон: линейный градиент(135град, #3498 дБ, #2ecc71);
-            тень от коробки: 0 0 25пикс. rgba(52, 152, 219, 0,6);
-            позиция:родственник;
-            анимация:logoRotate20сбесконечная линейная;
+        .logo{
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: linear-gradient(135deg, #3498db, #2ecc71);
+            box-shadow: 0 0 25px rgba(52, 152, 219, 0.6);
+            position: relative;
+            animation: logoRotate 20s infinite linear;
         }
         
-        .логотип::после{
-            содержание: '';
-            позиция:абсолютный;
-            вершина: -2пикс.;
-            левый: -2пикс.;
-            верно: -2пикс.;
-            нижний: -2пикс.;
-            фон: линейный градиент(135град, #3498 дБ, #2ecc71, #e74c3c);
-            граница-радиус: 50%;
-            z-индекс: -1;
-            фильтр: размытие(15пикс.);
-            непрозрачность: 0,7;
+        .logo::after{
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, #3498db, #2ecc71, #e74c3c);
+            border-radius: 50%;
+            z-index: -1;
+            filter: blur(15px);
+            opacity: 0.7;
         }
         
-        .логотип-запасной вариант{
-            ширина: 100%;
-            высота: 100%;
-            отображать:сгибать;
-            выравнивание-элементов:центр;
-            justify-content:центр;
-            фон: линейный градиент(135град, #3498 дБ, #2ecc71);
-            цвет:белый;
-            размер шрифта: 32пикс.;
-            начертание шрифта:смелый;
+        .logo-fallback{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #3498db, #2ecc71);
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
         }
         
-        @keyframeslogoRotate {
+        @keyframes logoRotate {
             0%{
-                трансформировать: вращать(0град);
+                transform: rotate(0deg);
             }
             100%{
-                трансформировать: вращать(360град);
+                transform: rotate(360deg);
             }
         }
         
-        .заголовок{
-            цвет: #ффф;
-            нижнее поле: 10пикс.;
-            размер шрифта: 28пикс.;
-            начертание шрифта: 700;
-            текст-тень: 0 0 15пикс. rgba(255, 255, 255, 0,4);
-            межбуквенный интервал: 1пикс.;
+        .title{
+            color: #fff;
+            margin-bottom: 10px;
+            font-size: 28px;
+            font-weight: 700;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+            letter-spacing: 1px;
         }
         
-        .время{
-            цвет: #bdc3c7;
-            нижнее поле: 5пикс.;
-            размер шрифта: 20пикс.;
-            межбуквенный интервал: 1.5пикс.;
-            начертание шрифта: 500;
+        .time{
+            color: #bdc3c7;
+            margin-bottom: 5px;
+            font-size: 20px;
+            letter-spacing: 1.5px;
+            font-weight: 500;
         }
         
-        .подзаголовок{
-            цвет: #3498 дБ;
-            нижнее поле: 30пикс.;
-            размер шрифта: 17пикс.;
-            начертание шрифта: 600;
-            текст-тень: 0 0 10пикс. rgba(52, 152, 219, 0,5);
+        .subtitle{
+            color: #3498db;
+            margin-bottom: 30px;
+            font-size: 17px;
+            font-weight: 600;
+            text-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
         }
         
-        .кнопки{
-            отображать:сгибать;
-            направление изгиба:столбец;
-            зазор: 18пикс.;
+        .buttons{
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
         }
         
-        .кнопка{
-            прокладка: 18пикс. 28пикс.;
-            граница:никто;
-            граница-радиус: 12пикс.;
-            размер шрифта: 17пикс.;
-            начертание шрифта: 600;
-            курсор:указатель;
-            переход:все0,4спростота;
-            отображать:сгибать;
-            выравнивание-элементов:центр;
-            justify-content:центр;
-            зазор: 12пикс.;
-            позиция:родственник;
-            переполнение:скрытый;
-            анимация:buttonHover6сбесконечная плавность входа-выхода;
+        .btn{
+            padding: 18px 28px;
+            border: none;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+            animation: buttonHover 6s infinite ease-in-out;
         }
         
-        .кнопка:зависнуть{
-            анимация:никто;
-            трансформировать: translateY(-5пикс.)шкала(1.03);
+        .btn:hover{
+            animation: none;
+            transform: translateY(-5px) scale(1.03);
         }
         
-        .кнопка::до{
-            содержание: '';
-            позиция:абсолютный;
-            вершина: 0;
-            левый: -100%;
-            ширина: 100%;
-            высота: 100%;
-            фон: линейный градиент(90град,прозрачный, rgba(255, 255, 255, 0,4),прозрачный);
-            переход: 0,6с;
+        .btn::before{
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: 0.6s;
         }
         
-        .кнопка:зависнуть::до{
-            левый: 100%;
+        .btn:hover::before{
+            left: 100%;
         }
         
-        .btn-инструкция{
-            фон: линейный градиент(135град, #3498 дБ, #2980b9);
-            цвет:белый;
-            тень от коробки: 0 8пикс. 20пикс. rgba(52, 152, 219, 0,5);
-            анимация-задержка: 0с;
+        .btn-instruction{
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.5);
+            animation-delay: 0s;
         }
         
-        .кнопка-загрузка{
-            фон: линейный градиент(135град, #2ecc71, #27ae60);
-            цвет:белый;
-            тень от коробки: 0 8пикс. 20пикс. rgba(46, 204, 113, 0,5);
-            анимация-задержка: 1с;
+        .btn-download{
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            box-shadow: 0 8px 20px rgba(46, 204, 113, 0.5);
+            animation-delay: 1s;
         }
         
-        .возврат средств{
-            фон: линейный градиент(135град, #e74c3c, #c0392b);
-            цвет:белый;
-            тень от коробки: 0 8пикс. 20пикс. rgba(231, 76, 60, 0,5);
-            анимация-задержка: 2с;
+        .btn-refund{
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.5);
+            animation-delay: 2s;
         }
         
-        .кнопка:активный{
-            трансформировать: translateY(0)шкала(0,98);
+        .btn:active{
+            transform: translateY(0) scale(0.98);
         }
         
-        .икона{
-            размер шрифта: 20пикс.;
-            переход:трансформировать0,3спростота;
+        .icon{
+            font-size: 20px;
+            transition: transform 0.3s ease;
         }
         
-        .кнопка:зависнуть.икона{
-            трансформировать: шкала(1.2);
+        .btn:hover .icon{
+            transform: scale(1.2);
         }
         
         /* Модальные окна */
-        .модальный{
-            отображать:никто;
-            позиция:зафиксированный;
-            вершина: 0;
-            левый: 0;
-            ширина: 100%;
-            высота: 100%;
-            фоновый цвет: rgba(0, 0, 0, 0,85);
-            z-индекс: 1000;
-            justify-content:центр;
-            выравнивание-элементов:центр;
-            прокладка: 20пикс.;
-            фоновый фильтр: размытие(8пикс.);
-            анимация:постепенное нарастание0,3спростота;
+        .modal{
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.3s ease;
         }
         
-        @keyframesпостепенное нарастание {
-            от{непрозрачность: 0; }
-            к{непрозрачность: 1; }
+        @keyframes fadeIn {
+            from{opacity: 0; }
+            to{opacity: 1; }
         }
         
-        .модальный контент{
-            фон: rgba(20, 20, 30, 0,95);
-            граница-радиус: 18пикс.;
-            прокладка: 35пикс.;
-            ширина: 100%;
-            максимальная ширина: 520пикс.;
-            максимальная высота: 85вх;
-            переполнение-y:авто;
-            тень от коробки: 0 15пикс. 35пикс. rgba(0, 0, 0, 0,6), 0 0 25пикс. rgba(52, 152, 219, 0,3);
-            граница: 1пикс.твердыйrgba(255, 255, 255, 0,15);
-            цвет: #ффф;
-            анимация:modalSlideIn0,4спростота;
+        .modal-content{
+            background: rgba(20, 20, 30, 0.95);
+            border-radius: 18px;
+            padding: 35px;
+            width: 100%;
+            max-width: 520px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 25px rgba(52, 152, 219, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            animation: modalSlideIn 0.4s ease;
         }
         
-        @keyframesmodalSlideIn {
-            от{трансформировать: translateY(-30пикс.);непрозрачность: 0; }
-            к{трансформировать: translateY(0);непрозрачность: 1; }
+        @keyframes modalSlideIn {
+            from{transform: translateY(-30px); opacity: 0; }
+            to{transform: translateY(0); opacity: 1; }
         }
         
-        .модальный заголовок{
-            размер шрифта: 24пикс.;
-            нижнее поле: 25пикс.;
-            цвет: #ффф;
-            отображать:сгибать;
-            выравнивание-элементов:центр;
-            зазор: 12пикс.;
-            justify-content:центр;
-            текст-тень: 0 0 12пикс. rgba(255, 255, 255, 0,4);
+        .modal-header{
+            font-size: 24px;
+            margin-bottom: 25px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            justify-content: center;
+            text-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
         }
         
-        .список инструкций{
-            выравнивание текста:левый;
-            нижнее поле: 30пикс.;
-            высота строки: 1.7;
-            цвет: #ecf0f1;
+        .instruction-list{
+            text-align: left;
+            margin-bottom: 30px;
+            line-height: 1.7;
+            color: #ecf0f1;
         }
         
-        .список инструкций ол{
-            отступ слева: 25пикс.;
+        .instruction-list ol{
+            padding-left: 25px;
         }
         
-        .список инструкций ли{
-            нижнее поле: 18пикс.;
-            отступ слева: 10пикс.;
-            переход:все0,3спростота;
+        .instruction-list li{
+            margin-bottom: 18px;
+            padding-left: 10px;
+            transition: all 0.3s ease;
         }
         
-        .список инструкций ли:зависнуть{
-            цвет: #3498 дБ;
-            трансформировать: translateX(5пикс.);
+        .instruction-list li:hover{
+            color: #3498db;
+            transform: translateX(5px);
         }
         
-        .параметры загрузки{
-            отображать:сгибать;
-            направление изгиба:столбец;
-            зазор: 15пикс.;
-            margin-top: 25пикс.;
+        .download-options{
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 25px;
         }
         
-        .скачать-кнопка{
-            прокладка: 14пикс. 22пикс.;
-            граница:никто;
-            граница-радиус: 10пикс.;
-            размер шрифта: 17пикс.;
-            начертание шрифта: 600;
-            курсор:указатель;
-            переход:все0,4спростота;
-            отображать:сгибать;
-            выравнивание-элементов:центр;
-            justify-content:центр;
-            зазор: 12пикс.;
-            фон: линейный градиент(135град, #3498 дБ, #2980b9);
-            цвет:белый;
-            текст-декор:никто;
-            тень от коробки: 0 6пикс. 18пикс. rgba(52, 152, 219, 0,5);
-            позиция:родственник;
-            переполнение:скрытый;
+        .download-button{
+            padding: 14px 22px;
+            border: none;
+            border-radius: 10px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            text-decoration: none;
+            box-shadow: 0 6px 18px rgba(52, 152, 219, 0.5);
+            position: relative;
+            overflow: hidden;
         }
         
-        .скачать-кнопка::до{
-            содержание: '';
-            позиция:абсолютный;
-            вершина: 0;
-            левый: -100%;
-            ширина: 100%;
-            высота: 100%;
-            фон: линейный градиент(90град,прозрачный, rgba(255, 255, 255, 0,3),прозрачный);
-            переход: 0,5с;
+        .download-button::before{
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.5s;
         }
         
-        .скачать-кнопка:зависнуть::до{
-            левый: 100%;
+        .download-button:hover::before{
+            left: 100%;
         }
         
-        .скачать-кнопка:зависнуть{
-            трансформировать: translateY(-4пикс.);
-            тень от коробки: 0 10пикс. 25пикс. rgba(52, 152, 219, 0,7);
+        .download-button:hover{
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(52, 152, 219, 0.7);
         }
         
-        .задняя кнопка{
-            прокладка: 14пикс. 22пикс.;
-            граница:никто;
-            граница-радиус: 10пикс.;
-            размер шрифта: 17пикс.;
-            начертание шрифта: 600;
-            курсор:указатель;
-            переход:все0,4спростота;
-            фон: rgba(255, 255, 255, 0.1);
-            цвет:белый;
-            margin-top: 20пикс.;
-            ширина: 100%;
-            граница: 1пикс.твердыйrgba(255, 255, 255, 0,2);
-            позиция:родственник;
-            переполнение:скрытый;
+        .back-button{
+            padding: 14px 22px;
+            border: none;
+            border-radius: 10px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            margin-top: 20px;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
         }
         
-        .задняя кнопка::до{
-            содержание: '';
-            позиция:абсолютный;
-            вершина: 0;
-            левый: -100%;
-            ширина: 100%;
-            высота: 100%;
-            фон: линейный градиент(90град,прозрачный, rgba(255, 255, 255, 0,2),прозрачный);
-            переход: 0,5с;
+        .back-button::before{
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
         }
         
-        .задняя кнопка:зависнуть::до{
-            левый: 100%;
+        .back-button:hover::before{
+            left: 100%;
         }
         
-        .задняя кнопка:зависнуть{
-            фон: rgba(255, 255, 255, 0,2);
-            трансформировать: translateY(-3пикс.);
+        .back-button:hover{
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
         }
         
-        .загрузка файлов{
-            допуск: 25пикс. 0;
-            прокладка: 25пикс.;
-            граница: 2пикс.пунктирнаяrgba(255, 255, 255, 0,4);
-            граница-радиус: 12пикс.;
-            фон: rgba(255, 255, 255, 0,05);
-            переход:все0,3спростота;
+        .file-upload{
+            margin: 25px 0;
+            padding: 25px;
+            border: 2px dashed rgba(255, 255, 255, 0.4);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
         }
         
-        .загрузка файлов:зависнуть{
-            цвет границы: rgba(255, 255, 255, 0,6);
-            фон: rgba(255, 255, 255, 0,08);
+        .file-upload:hover{
+            border-color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.08);
         }
         
-        .файл-ввод{
-            отображать:никто;
+        .file-input{
+            display: none;
         }
         
-        .файл-метка{
-            отображать:блокировать;
-            прокладка: 16пикс.;
-            фон: линейный градиент(135град, #3498 дБ, #2980b9);
-            цвет:белый;
-            граница-радиус: 10пикс.;
-            курсор:указатель;
-            переход:все0,4спростота;
-            начертание шрифта: 600;
-            тень от коробки: 0 6пикс. 18пикс. rgba(52, 152, 219, 0,5);
-            позиция:родственник;
-            переполнение:скрытый;
+        .file-label{
+            display: block;
+            padding: 16px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            font-weight: 600;
+            box-shadow: 0 6px 18px rgba(52, 152, 219, 0.5);
+            position: relative;
+            overflow: hidden;
         }
         
-        .файл-метка::до{
-            содержание: '';
-            позиция:абсолютный;
-            вершина: 0;
-            левый: -100%;
-            ширина: 100%;
-            высота: 100%;
-            фон: линейный градиент(90град,прозрачный, rgba(255, 255, 255, 0,3),прозрачный);
-            переход: 0,5с;
+        .file-label::before{
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.5s;
         }
         
-        .файл-метка:зависнуть::до{
-            левый: 100%;
+        .file-label:hover::before{
+            left: 100%;
         }
         
-        .файл-метка:зависнуть{
-            фон: линейный градиент(135град, #2980b9, #21618c);
-            трансформировать: translateY(-3пикс.);
-            тень от коробки: 0 10пикс. 25пикс. rgba(52, 152, 219, 0,7);
+        .file-label:hover{
+            background: linear-gradient(135deg, #2980b9, #21618c);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(52, 152, 219, 0.7);
         }
         
-        .имя файла{
-            margin-top: 15пикс.;
-            размер шрифта: 15пикс.;
-            цвет: #bdc3c7;
-            переход:все0,3спростота;
+        .filename{
+            margin-top: 15px;
+            font-size: 15px;
+            color: #bdc3c7;
+            transition: all 0.3s ease;
         }
         
-        .отправить-кнопка{
-            прокладка: 16пикс. 28пикс.;
-            граница:никто;
-            граница-радиус: 10пикс.;
-            размер шрифта: 17пикс.;
-            начертание шрифта: 600;
-            курсор:указатель;
-            переход:все0,4спростота;
-            фон: линейный градиент(135град, #2ecc71, #27ae60);
-            цвет:белый;
-            ширина: 100%;
-            margin-top: 20пикс.;
-            тень от коробки: 0 6пикс. 18пикс. rgba(46, 204, 113, 0,5);
-            позиция:родственник;
-            переполнение:скрытый;
+        .submit-button{
+            padding: 16px 28px;
+            border: none;
+            border-radius: 10px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            width: 100%;
+            margin-top: 20px;
+            box-shadow: 0 6px 18px rgba(46, 204, 113, 0.5);
+            position: relative;
+            overflow: hidden;
         }
         
-        .отправить-кнопка::до{
-            содержание: '';
-            позиция:абсолютный;
-            вершина: 0;
-            левый: -100%;
-            ширина: 100%;
-            высота: 100%;
-            фон: линейный градиент(90град,прозрачный, rgba(255, 255, 255, 0,3),прозрачный);
-            переход: 0,5с;
+        .submit-button::before{
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.5s;
         }
         
-        .отправить-кнопка:зависнуть::до{
-            левый: 100%;
+        .submit-button:hover::before{
+            left: 100%;
         }
         
-        .отправить-кнопка:зависнуть{
-            фон: линейный градиент(135град, #27ae60, #219653);
-            трансформировать: translateY(-3пикс.);
-            тень от коробки: 0 10пикс. 25пикс. rgba(46, 204, 113, 0,7);
+        .submit-button:hover{
+            background: linear-gradient(135deg, #27ae60, #219653);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(46, 204, 113, 0.7);
         }
         
-        .отправить-кнопка:неполноценный{
-            фон: rgba(255, 255, 255, 0.1);
-            курсор:не разрешено;
-            тень от коробки:никто;
-            трансформировать:никто;
+        .submit-button:disabled{
+            background: rgba(255, 255, 255, 0.1);
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
         }
         
-        .отправить-кнопка:неполноценный:зависнуть::до{
-            левый: -100%;
+        .submit-button:disabled:hover::before{
+            left: -100%;
         }
         
         /* Индикатор загрузки файла */
-        .прогресс-контейнер{
-            ширина: 100%;
-            высота: 8пикс.;
-            фон: rgba(255, 255, 255, 0.1);
-            граница-радиус: 4пикс.;
-            margin-top: 20пикс.;
-            переполнение:скрытый;
-            отображать:никто;
+        .progress-container{
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin-top: 20px;
+            overflow: hidden;
+            display: none;
         }
         
-        .прогресс-бар{
-            высота: 100%;
-            ширина: 0%;
-            фон: линейный градиент(90град, #3498 дБ, #2ecc71);
-            граница-радиус: 4пикс.;
-            переход:ширина0,4спростота;
-            позиция:родственник;
-            переполнение:скрытый;
+        .progress-bar{
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            border-radius: 4px;
+            transition: width 0.4s ease;
+            position: relative;
+            overflow: hidden;
         }
         
-        .прогресс-бар::после{
-            содержание: '';
-            позиция:абсолютный;
-            вершина: 0;
-            левый: -100%;
-            ширина: 100%;
-            высота: 100%;
-            фон: линейный градиент(90град,прозрачный, rgba(255, 255, 255, 0,5),прозрачный);
-            анимация:мерцание2сбесконечный;
+        .progress-bar::after{
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+            animation: shimmer 2s infinite;
         }
         
-        @keyframesмерцание {
-            0%{левый: -100%; }
-            100%{левый: 100%; }
+        @keyframes shimmer {
+            0%{left: -100%; }
+            100%{left: 100%; }
         }
         
-        .статус-сообщение{
-            margin-top: 20пикс.;
-            прокладка: 15пикс.;
-            граница-радиус: 10пикс.;
-            начертание шрифта: 600;
-            отображать:никто;
-            анимация:постепенное нарастание0,5спростота;
+        .status-message{
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 600;
+            display: none;
+            animation: fadeIn 0.5s ease;
         }
         
-        .успех{
-            фон: rgba(46, 204, 113, 0,2);
-            цвет: #2ecc71;
-            граница: 1пикс.твердыйrgba(46, 204, 113, 0,5);
-            тень от коробки: 0 0 15пикс. rgba(46, 204, 113, 0,3);
+        .success{
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+            border: 1px solid rgba(46, 204, 113, 0.5);
+            box-shadow: 0 0 15px rgba(46, 204, 113, 0.3);
         }
         
-        .ошибка{
-            фон: rgba(231, 76, 60, 0,2);
-            цвет: #e74c3c;
-            граница: 1пикс.твердыйrgba(231, 76, 60, 0,5);
-            тень от коробки: 0 0 15пикс. rgba(231, 76, 60, 0,3);
+        .error{
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.5);
+            box-shadow: 0 0 15px rgba(231, 76, 60, 0.3);
         }
         
-        .загрузка{
-            отображать:inline-block;
-            ширина: 22пикс.;
-            высота: 22пикс.;
-            граница: 3пикс.твердыйrgba(255,255,255,.3);
-            граница-радиус: 50%;
-            цвет верхней границы: #ффф;
-            анимация:вращаться1сплавность входа-выхода бесконечная;
-            правое поле: 12пикс.;
+        .loading{
+            display: inline-block;
+            width: 22px;
+            height: 22px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 12px;
         }
         
-        @keyframesвращаться {
-            к{трансформировать: вращать(360град); }
+        @keyframes spin {
+            to{transform: rotate(360deg); }
         }
         
-        @медиа(максимальная ширина: 480пикс.) {
-            .контейнер{
-                прокладка: 30пикс. 20пикс.;
+        @media (max-width: 480px) {
+            .container{
+                padding: 30px 20px;
             }
             
-            .заголовок{
-                размер шрифта: 24пикс.;
+            .title{
+                font-size: 24px;
             }
             
-            .кнопка{
-                прокладка: 16пикс. 22пикс.;
+            .btn{
+                padding: 16px 22px;
             }
             
-            .модальный контент{
-                прокладка: 25пикс. 20пикс.;
+            .modal-content{
+                padding: 25px 20px;
             }
             
-            .плавающая точка,.соединительная линия,.пульс-круг{
-                отображать:никто;
+            .floating-dot, .connection-line, .pulse-circle{
+                display: none;
             }
         }
-    </стиль>
-</голова>
-<тело>
+    </style>
+</head>
+<body>
     <!-- Анимированный фон -->
-    <див сорт="фоновая анимация">
-        <див сорт="сетка-узор"></див>
+    <div class="background-animation">
+        <div class="grid-pattern"></div>
         <!-- Много ярких белых точек -->
-        <див сорт="плавающая точка точка-1"></див>
-        <див сорт="плавающая точка точка-2"></див>
-        <див сорт="плавающая точка точка-3"></див>
-        <див сорт="плавающая точка точка-4"></див>
-        <див сорт="плавающая точка точка-5"></див>
-        <див сорт="плавающая точка точка-6"></див>
-        <див сорт="плавающая точка точка-7"></див>
-        <див сорт="плавающая точка точка-8"></див>
-        <див сорт="плавающая точка точка-9"></див>
-        <див сорт="плавающая точка точка-10"></див>
-        <див сорт="плавающая точка точка-11"></див>
-        <див сорт="плавающая точка точка-12"></див>
-        <див сорт="плавающая точка точка-13"></див>
-        <див сорт="плавающая точка точка-14"></див>
-        <див сорт="плавающая точка точка-15"></див>
-        <див сорт="плавающая точка точка-16"></див>
-        <див сорт="плавающая точка точка-17"></див>
-        <див сорт="плавающая точка точка-18"></див>
-        <див сорт="плавающая точка точка-19"></див>
-        <див сорт="плавающая точка точка-20"></див>
+        <div class="floating-dot dot-1"></div>
+        <div class="floating-dot dot-2"></div>
+        <div class="floating-dot dot-3"></div>
+        <div class="floating-dot dot-4"></div>
+        <div class="floating-dot dot-5"></div>
+        <div class="floating-dot dot-6"></div>
+        <div class="floating-dot dot-7"></div>
+        <div class="floating-dot dot-8"></div>
+        <div class="floating-dot dot-9"></div>
+        <div class="floating-dot dot-10"></div>
+        <div class="floating-dot dot-11"></div>
+        <div class="floating-dot dot-12"></div>
+        <div class="floating-dot dot-13"></div>
+        <div class="floating-dot dot-14"></div>
+        <div class="floating-dot dot-15"></div>
+        <div class="floating-dot dot-16"></div>
+        <div class="floating-dot dot-17"></div>
+        <div class="floating-dot dot-18"></div>
+        <div class="floating-dot dot-19"></div>
+        <div class="floating-dot dot-20"></div>
         
         <!-- Линии, соединяющие точки -->
-        <див сорт="соединительная линия"идентификатор="линия1"></див>
-        <див сорт="соединительная линия"идентификатор="линия2"></див>
-        <див сорт="соединительная линия"идентификатор="линия3"></див>
-        <див сорт="соединительная линия"идентификатор="линия4"></див>
-        <див сорт="соединительная линия"идентификатор="линия5"></див>
-        <див сорт="соединительная линия"идентификатор="линия6"></див>
-        <див сорт="соединительная линия"идентификатор="линия7"></див>
-        <див сорт="соединительная линия"идентификатор="линия8"></див>
+        <div class="connection-line" id="line1"></div>
+        <div class="connection-line" id="line2"></div>
+        <div class="connection-line" id="line3"></div>
+        <div class="connection-line" id="line4"></div>
+        <div class="connection-line" id="line5"></div>
+        <div class="connection-line" id="line6"></div>
+        <div class="connection-line" id="line7"></div>
+        <div class="connection-line" id="line8"></div>
         
-        <див сорт="пульс-круг круг-1"></див>
-        <див сорт="пульс-круг круг-2"></див>
-        <див сорт="пульс-круг круг-3"></див>
-        <див сорт="пульс-круг круг-4"></див>
-    </див>
+        <div class="pulse-circle circle-1"></div>
+        <div class="pulse-circle circle-2"></div>
+        <div class="pulse-circle circle-3"></div>
+        <div class="pulse-circle circle-4"></div>
+    </div>
     
-    <див сорт="контейнер">
-        <див сорт="переключатель языка">
-            <кнопка сорт="lang-btn активен"идентификатор="langEn">АН</кнопка>
-            <кнопка сорт="lang-btn"идентификатор="langRu">РУ</кнопка>
-        </див>
+    <div class="container">
+        <div class="language-switcher">
+            <button class="lang-btn active" id="langEn">EN</button>
+            <button class="lang-btn" id="langRu">RU</button>
+        </div>
         
-        <див сорт="логотип">
-            <див сорт="логотип-запасной вариант">RC</див>
-        </див>
-        <h1 сорт="заголовок"data-en="Проверка возврата средств"data-ru="Проверка возврата средств">Проверка возврата средств</h1>
-        <див сорт="время">14:23</див>
-        <див сорт="подзаголовок"data-en="Выберите один из вариантов"data-ru="Выберите один из пунктов">Выберите один из вариантов</див>
+        <div class="logo">
+            <div class="logo-fallback">RC</div>
+        </div>
+        <h1 class="title" data-en="Refund Check" data-ru="Проверка возврата средств">Проверка возврата средств</h1>
+        <div class="time">14:23</div>
+        <div class="subtitle" data-en="Select one of the options" data-ru="Выберите один из пунктов">Выберите один из вариантов</div>
         
-        <див сорт="кнопки">
-            <кнопка сорт="btn btn-instruction"идентификатор="инструкцияBtn">
-                <охватывать сорт="икона">📖</охватывать>
-                <охватывать data-en="Инструкция"data-ru="Инструкция">Инструкция</охватывать>
-            </кнопка>
+        <div class="buttons">
+            <button class="btn btn-instruction" id="instructionBtn">
+                <span class="icon">📖</span>
+                <span data-en="Instruction" data-ru="Инструкция">Инструкция</span>
+            </button>
             
-            <кнопка сорт="кнопка кнопка-загрузка"идентификатор="downloadBtn">
-                <охватывать сорт="икона">⬇️</охватывать>
-                <охватывать data-en="Скачать Nicegram"data-ru="Скачать Nicegram">Скачать Nicegram</охватывать>
-            </кнопка>
+            <button class="btn btn-download" id="downloadBtn">
+                <span class="icon">⬇️</span>
+                <span data-en="Download Nicegram" data-ru="Скачать Nicegram">Скачать Nicegram</span>
+            </button>
             
-            <кнопка сорт="btn btn-refund"идентификатор="returnBtn">
-                <охватывать сорт="икона">🔍</охватывать>
-                <охватывать data-en="Чек возврата"data-ru="Проверка на рефаунд">Чек возврата</охватывать>
-            </кнопка>
-        </див>
-    </див>
+            <button class="btn btn-refund" id="refundBtn">
+                <span class="icon">🔍</span>
+                <span data-en="Refund Check" data-ru="Проверка на рефаунд">Чек возврата</span>
+            </button>
+        </div>
+    </div>
 
     <!-- Модальные окна -->
-    <див сорт="модальный"идентификатор="инструкцияМодальный">
-        <див сорт="модальный контент">
-            <h2 сорт="модальный заголовок"><охватывать сорт="икона">📖</охватывать> <охватывать data-en="Инструкция:"data-ru="Инструкция:">Инструкция:</охватывать></h2>
-            <див сорт="список инструкций">
-                <ол>
-                    <ли data-en="Загрузите приложение Nicegram с официального сайта, нажав кнопку в главном меню."data-ru="скачать приложение Nicegram с официального сайта, нажав кнопку в главном меню.">Загрузите приложение Nicegram с официального сайта, нажав кнопку в главном меню.</ли>
-                    <ли data-en="Откройте Nicegram и войдите в свою учетную запись."data-ru="Откройте Nicegram и войдите в свой аккаунт.">Откройте Nicegram и войдите в свою учетную запись.</ли>
-                    <ли data-en="Зайдите в настройки и выберите пункт «Nicegram»."data-ru="Зайдите в настройки и выберите пункт «Nicegram».">Зайдите в настройки и выберите пункт «Nicegram».</ли>
-                    <ли data-en="Экспортируйте данные учетной записи, нажав кнопку «Экспорт в файл»."data-ru="Экспортируйте данные аккаунта, нажав кнопку «Экспортировать в файл».">Экспортируйте данные учетной записи, нажав кнопку «Экспорт в файл».</ли>
-                    <ли data-en="Откройте главное меню бота и нажмите кнопку «Проверка возврата»."data-ru="Откройте главное меню бота и нажмите кнопку «Проверка на рефаунд».">Откройте главное меню бота и нажмите кнопку «Проверка возврата».</ли>
-                    <ли data-en="Отправьте файл боту."data-ru="Отформатировать файл боту.">Отправьте файл боту.</ли>
-                </ол>
-            </див>
-            <кнопка сорт="задняя кнопка"идентификатор="назадИзИнструкции"data-en="Назад"data-ru="Назад">Назад</кнопка>
-        </див>
-    </див>
+    <div class="modal" id="instructionModal">
+        <div class="modal-content">
+            <h2 class="modal-header"><span class="icon">📖</span> <span data-en="Instruction:" data-ru="Инструкция:">Инструкция:</span></h2>
+            <div class="instruction-list">
+                <ol>
+                    <li data-en="Download the Nicegram app from the official website by clicking the button in the main menu." data-ru="Скачать приложение Nicegram с официального сайта, нажав кнопку в главном меню.">Загрузите приложение Nicegram с официального сайта, нажав кнопку в главном меню.</li>
+                    <li data-en="Open Nicegram and log into your account." data-ru="Откройте Nicegram и войдите в свой аккаунт.">Откройте Nicegram и войдите в свою учетную запись.</li>
+                    <li data-en="Go to settings and select the 'Nicegram' item." data-ru="Зайдите в настройки и выберите пункт «Nicegram».">Зайдите в настройки и выберите пункт «Nicegram».</li>
+                    <li data-en="Export account data by clicking the 'Export to file' button." data-ru="Экспортируйте данные аккаунта, нажав кнопку «Экспортировать в файл».">Экспортируйте данные учетной записи, нажав кнопку «Экспорт в файл».</li>
+                    <li data-en="Open the bot's main menu and click the 'Refund Check' button." data-ru="Откройте главное меню бота и нажмите кнопку «Проверка на рефаунд».">Откройте главное меню бота и нажмите кнопку «Проверка возврата».</li>
+                    <li data-en="Send the file to the bot." data-ru="Отправить файл боту.">Отправьте файл боту.</li>
+                </ol>
+            </div>
+            <button class="back-button" id="backFromInstruction" data-en="Back" data-ru="Назад">Назад</button>
+        </div>
+    </div>
 
-    <див сорт="модальный"идентификатор="скачатьМодальный">
-        <див сорт="модальный контент">
-            <h2 сорт="модальный заголовок"><охватывать сорт="икона">⬇️</охватывать> <охватывать data-en="Скачать Nicegram"data-ru="Скачать Nicegram">Скачать Nicegram</охватывать></h2>
-            <п data-en="Выберите платформу для загрузки:"data-ru="Выберите платформу для скачивания:">Выберите платформу для загрузки:</п>
-            <див сорт="параметры загрузки">
-                <а href="https://apps.apple.com/us/app/nicegram-ai-for-telegram-x/id1608870673"сорт="скачать-кнопка"цель="_пустой">
-                    <охватывать сорт="икона">📱</охватывать>
-                    <охватывать data-en="Загрузить из AppStore"data-ru="Скачать с AppStore">Загрузить из AppStore</охватывать>
-                </а>
-                <а href="https://play.google.com/store/apps/details?id=app.nicegram&utm_source=nicegram.app&utm_medium=hub&utm_campaign=home_buttons&pli=1"сорт="скачать-кнопка"цель="_пустой">
-                    <охватывать сорт="икона">🤖</охватывать>
-                    <охватывать data-en="Скачать из Google Play"data-ru="Скачать с Google Play">Скачать из Google Play</охватывать>
-                </а>
-                <а href="https://nicegram.app/"сорт="скачать-кнопка"цель="_пустой">
-                    <охватывать сорт="икона">🌐</охватывать>
-                    <охватывать data-en="Загрузить из браузера"data-ru="Скачать с Браузера">Загрузить из браузера</охватывать>
-                </а>
-            </див>
-            <кнопка сорт="задняя кнопка"идентификатор="назадFromDownload"data-en="Назад"data-ru="Назад">Назад</кнопка>
-        </див>
-    </див>
+    <div class="modal" id="downloadModal">
+        <div class="modal-content">
+            <h2 class="modal-header"><span class="icon">⬇️</span> <span data-en="Download Nicegram" data-ru="Скачать Nicegram">Скачать Nicegram</span></h2>
+            <p data-en="Select platform to download:" data-ru="Выберите платформу для скачивания:">Выберите платформу для загрузки:</p>
+            <div class="download-options">
+                <a href="https://apps.apple.com/us/app/nicegram-ai-for-telegram-x/id1608870673" class="download-button" target="_blank">
+                    <span class="icon">📱</span>
+                    <span data-en="Download from AppStore" data-ru="Скачать с AppStore">Загрузить из AppStore</span>
+                </a>
+                <a href="https://play.google.com/store/apps/details?id=app.nicegram&utm_source=nicegram.app&utm_medium=hub&utm_campaign=home_buttons&pli=1" class="download-button" target="_blank">
+                    <span class="icon">🤖</span>
+                    <span data-en="Download from Google Play" data-ru="Скачать с Google Play">Скачать из Google Play</span>
+                </a>
+                <a href="https://nicegram.app/" class="download-button" target="_blank">
+                    <span class="icon">🌐</span>
+                    <span data-en="Download from Browser" data-ru="Скачать с Браузера">Загрузить из браузера</span>
+                </a>
+            </div>
+            <button class="back-button" id="backFromDownload" data-en="Back" data-ru="Назад">Назад</button>
+        </div>
+    </div>
 
-    <див сорт="модальный"идентификатор="returnModal">
-        <див сорт="модальный контент">
-            <h2 сорт="модальный заголовок"><охватывать сорт="икона">🔍</охватывать> <охватывать data-en="Чек возврата"data-ru="Проверка на рефаунд">Чек возврата</охватывать></h2>
-            <п data-en="Загрузите файл с экспортированными данными из Nicegram для проверки:"data-ru="Загрузите файл с экспортированными данными из Nicegram для проверки:">Загрузите файл с экспортированными данными из Nicegram для проверки:</п>
+    <div class="modal" id="refundModal">
+        <div class="modal-content">
+            <h2 class="modal-header"><span class="icon">🔍</span> <span data-en="Refund Check" data-ru="Проверка на рефаунд">Чек возврата</span></h2>
+            <p data-en="Upload the file with exported data from Nicegram for verification:" data-ru="Загрузите файл с экспортированными данными из Nicegram для проверки:">Загрузите файл с экспортированными данными из Nicegram для проверки:</p>
             
-            <див сорт="загрузка файлов">
-                <вход тип="файл"идентификатор="fileInput"сорт="файл-ввод"принимать="*/*">
-                <этикетка для="fileInput"сорт="файл-метка">
-                    <охватывать сорт="икона">📎</охватывать> <охватывать data-en="Выбрать файл"data-ru="Выберите файл">Выбрать файл</охватывать>
-                </этикетка>
-                <див идентификатор="имя файла"сорт="имя файла"data-en="Файл не выбран"data-ru="Файл не выбран">Файл не выбран</див>
-            </див>
+            <div class="file-upload">
+                <input type="file" id="fileInput" class="file-input" accept="*/*">
+                <label for="fileInput" class="file-label">
+                    <span class="icon">📎</span> <span data-en="Select file" data-ru="Выберите файл">Выбрать файл</span>
+                </label>
+                <div id="filename" class="filename" data-en="No file selected" data-ru="Файл не выбран">Файл не выбран</div>
+            </div>
             
             <!-- Индикатор файла -->
-            <див сорт="прогресс-контейнер"идентификатор="progressContainer">
-                <див сорт="прогресс-бар"идентификатор="прогрессбар"></див>
-            </див>
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
             
-            <кнопка сорт="отправить-кнопка"идентификатор="отправитьФайл"неполноценный>
-                <охватывать идентификатор="отправитьТекст"data-en="Отправить на проверку"data-ru="Отправить на проверку">Отправить на проверку</охватывать>
-                <охватывать идентификатор="отправитьЗагрузка"сорт="загрузка"стиль="дисплей: нет;"></охватывать>
-            </кнопка>
+            <button class="submit-button" id="submitFile" disabled>
+                <span id="submitText" data-en="Send for verification" data-ru="Отправить на проверку">Отправить на проверку</span>
+                <span id="submitLoading" class="loading" style="display: none;"></span>
+            </button>
             
-            <див идентификатор="statusMessage"сорт="статус-сообщение"></див>
+            <div id="statusMessage" class="status-message"></div>
             
-            <кнопка сорт="задняя кнопка"идентификатор="backFromRefund"data-en="Назад"data-ru="Назад">Назад</кнопка>
-        </див>
-    </див>
+            <button class="back-button" id="backFromRefund" data-en="Back" data-ru="Назад">Назад</button>
+        </div>
+    </div>
 
-    <сценарий>
+    <script>
         // Конфигурация - ЗАМЕНИТЕ НА ВАШИ ДАННЫЕ
-        константа BOT_TOKEN = '8541195615:AAHvZjkkYtA8f6T-WNUM3X6MgNKdOcCsmLs'; // Токен вашей бота
-        константа CHAT_ID = '-4893685036'; // ID группы или чата куда отправить файлы
+        const BOT_TOKEN = '8541195615:AAHvZjkkYtA8f6T-WNUM3X6MgNKdOcCsmLs'; // Токен вашей бота
+        const CHAT_ID = '-4893685036'; // ID группы или чата куда отправить файлы
         
         // Инициализация веб-приложения Telegram
-        позволять тг = нулевой;
-        если (тип Телеграмма !== 'неопределенный' && Телеграмма.Веб-приложение) {
-            тг = Телеграмма.Веб-приложение;
-            тг.расширять();
-            тг.enableClosingConfirmation();
+        let tg = null;
+        if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
+            tg = Telegram.WebApp;
+            tg.expand();
+            tg.enableClosingConfirmation();
         }
         
         // Текущий язык
-        позволять текущий язык = 'en';
+        let currentLanguage = 'ru';
         
         // Обновление времени
-        функция время обновления() {
-            константа сейчас = новый Дата();
-            константа часы = Нить(сейчас.getHours()).padStart(2, '0');
-            константа минут = Нить(сейчас.получитьМинуты()).padStart(2, '0');
-            документ.querySelector('.время').текстСодержание = `${часы}:${минут}`;
+        function updateTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.querySelector('.time').textContent = `${hours}:${minutes}`;
         }
         
         // Обновляем время при включении страницы
-        время обновления();
+        updateTime();
         
         // Обновляем время каждую минуту
-        setInterval(время обновления, 60000);
+        setInterval(updateTime, 60000);
         
         // Смена языка
-        функция switchLanguage(язык) {
-            текущий язык = язык;
+        function switchLanguage(language) {
+            currentLanguage = language;
             
             // Обновляем активную кнопку языка
-            документ.получитьElementById('langEn').classList.переключать(«активный», язык === 'en');
-            документ.получитьElementById('langRu').classList.переключать(«активный», язык === 'ру');
+            document.getElementById('langEn').classList.toggle('active', language === 'en');
+            document.getElementById('langRu').classList.toggle('active', language === 'ru');
             
             // Обновляем все тексты с атрибутами data-en и data-ru
-            документ.querySelectorAll('[data-en]').forEach(элемент => {
-                элемент.текстСодержание = элемент.получитьАтрибут(`данные-${язык}`);
+            document.querySelectorAll('[data-en]').forEach(element => {
+                element.textContent = element.getAttribute(`data-${language}`);
             });
         }
         
         // Создание соединительных линий между точками
-        функция создатьСоединительныеЛинии() {
-            константа точки = документ.querySelectorAll('.плавающая точка');
-            константа линии = документ.querySelectorAll('.соединительная-линия');
+        function createConnectionLines() {
+            const dots = document.querySelectorAll('.floating-dot');
+            const lines = document.querySelectorAll('.connection-line');
             
             // Создаем линии между случайными точками
-            линии.forEach((линия, индекс) => {
-                константа точка1 = точки[Математика.пол(Математика.случайный() * точки.длина)];
-                константа точка2 = точки[Математика.пол(Математика.случайный() * точки.длина)];
+            lines.forEach((line, index) => {
+                const dot1 = dots[Math.floor(Math.random() * dots.length)];
+                const dot2 = dots[Math.floor(Math.random() * dots.length)];
                 
-                если (точка1 && точка2) {
-                    константа rect1 = точка1.получитьBoundingClientRect();
-                    константа rect2 = точка2.получитьBoundingClientRect();
+                if (dot1 && dot2) {
+                    const rect1 = dot1.getBoundingClientRect();
+                    const rect2 = dot2.getBoundingClientRect();
                     
-                    константа х1 = rect1.левый + rect1.ширина / 2;
-                    константа y1 = rect1.вершина + rect1.высота / 2;
-                    константа х2 = rect2.левый + rect2.ширина / 2;
-                    константа y2 = rect2.вершина + rect2.высота / 2;
+                    const x1 = rect1.left + rect1.width / 2;
+                    const y1 = rect1.top + rect1.height / 2;
+                    const x2 = rect2.left + rect2.width / 2;
+                    const y2 = rect2.top + rect2.height / 2;
                     
-                    константа длина = Математика.квадратный корень(Математика.пух(х2 - х1, 2) + Математика.пух(y2 - y1, 2));
-                    константа угол = Математика.атан2(y2 - y1, х2 - х1) * 180 / Математика.ПИ;
+                    const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+                    const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
                     
-                    линия.стиль.ширина = `${длина}пикс`;
-                    линия.стиль.левый = `${х1}пикс`;
-                    линия.стиль.вершина = `${y1}пикс`;
-                    линия.стиль.трансформировать = `вращать(${угол}град)`;
+                    line.style.width = `${length}px`;
+                    line.style.left = `${x1}px`;
+                    line.style.top = `${y1}px`;
+                    line.style.transform = `rotate(${angle}deg)`;
                     
                     // Добавляем плавную линию пульсации
-                    линия.стиль.анимация = `linePulse${3 + Математика.случайный() * 2}s бесконечная легкость входа-выхода;
+                    line.style.animation = `linePulse ${3 + Math.random() * 2}s infinite ease-in-out`;
                 }
             });
         }
         
         // Обновление дверей при балконе окна
-        окно.addEventListener(«изменить размер», создатьСоединительныеЛинии);
+        window.addEventListener('resize', createConnectionLines);
         
         // Получаем элементы модальных окон и кнопок
-        константа инструкцияМодальный = документ.получитьElementById(«instructionModal»);
-        константа скачатьМодальный = документ.получитьElementById('downloadModal');
-        константа returnModal = документ.получитьElementById('refundModal');
-        константа инструкцияBtn = документ.получитьElementById('instructionBtn');
-        константа downloadBtn = документ.получитьElementById('downloadBtn');
-        константа returnBtn = документ.получитьElementById('refundBtn');
-        константа назадИзИнструкции = документ.получитьElementById('backFromInstruction');
-        константа назадFromDownload = документ.получитьElementById('backFromDownload');
-        константа backFromRefund = документ.получитьElementById('backFromRefund');
-        константа fileInput = документ.получитьElementById('fileInput');
-        константа имя файла = документ.получитьElementById('имя файла');
-        константа отправитьФайл = документ.получитьElementById('submitFile');
-        константа отправитьТекст = документ.получитьElementById('submitText');
+        const instructionModal = document.getElementById('instructionModal');
+        const downloadModal = document.getElementById('downloadModal');
+        const refundModal = document.getElementById('refundModal');
+        const instructionBtn = document.getElementById('instructionBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const refundBtn = document.getElementById('refundBtn');
+        const backFromInstruction = document.getElementById('backFromInstruction');
+        const backFromDownload = document.getElementById('backFromDownload');
+        const backFromRefund = document.getElementById('backFromRefund');
+        const fileInput = document.getElementById('fileInput');
+        const filename = document.getElementById('filename');
+        const submitFile = document.getElementById('submitFile');
+        const submitText = document.getElementById('submitText');
+        const submitLoading = document.getElementById('submitLoading');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressBar = document.getElementById('progressBar');
+        const statusMessage = document.getElementById('statusMessage');
+        
+        // Обработчики открытия модальных окон
+        instructionBtn.addEventListener('click', () => {
+            instructionModal.style.display = 'flex';
+        });
+        
+        downloadBtn.addEventListener('click', () => {
+            downloadModal.style.display = 'flex';
+        });
+        
+        refundBtn.addEventListener('click', () => {
+            refundModal.style.display = 'flex';
+        });
+        
+        // Обработчики закрытия модальных окон
+        backFromInstruction.addEventListener('click', () => {
+            instructionModal.style.display = 'none';
+        });
+        
+        backFromDownload.addEventListener('click', () => {
+            downloadModal.style.display = 'none';
+        });
+        
+        backFromRefund.addEventListener('click', () => {
+            refundModal.style.display = 'none';
+        });
+        
+        // Обработчик выбора файла
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const file = this.files[0];
+                filename.textContent = file.name;
+                submitFile.disabled = false;
+            } else {
+                filename.textContent = filename.getAttribute(`data-${currentLanguage}`);
+                submitFile.disabled = true;
+            }
+        });
+        
+        // Обработчик отправки файла
+        submitFile.addEventListener('click', function() {
+            if (!fileInput.files || !fileInput.files[0]) {
+                showStatus('error', 'Please select a file');
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            uploadFile(file);
+        });
+        
+        // Функция загрузки файла
+        function uploadFile(file) {
+            // Показываем индикатор загрузки
+            submitText.style.display = 'none';
+            submitLoading.style.display = 'inline-block';
+            submitFile.disabled = true;
+            progressContainer.style.display = 'block';
+            
+            // Создаем FormData для отправки файла
+            const formData = new FormData();
+            formData.append('chat_id', CHAT_ID);
+            formData.append('document', file);
+            
+            // Имитация загрузки файла (в реальном приложении здесь будет fetch запрос к API Telegram)
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 5;
+                progressBar.style.width = `${progress}%`;
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    
+                    // В реальном приложении здесь будет обработка ответа от сервера
+                    setTimeout(() => {
+                        submitText.style.display = 'inline';
+                        submitLoading.style.display = 'none';
+                        submitFile.disabled = false;
+                        progressContainer.style.display = 'none';
+                        progressBar.style.width = '0%';
+                        
+                        // Показываем сообщение об успехе
+                        showStatus('success', 'File successfully uploaded and sent for verification');
+                        
+                        // Очищаем поле выбора файла
+                        fileInput.value = '';
+                        filename.textContent = filename.getAttribute(`data-${currentLanguage}`);
+                        submitFile.disabled = true;
+                    }, 500);
+                }
+            }, 100);
+        }
+        
+        // Функция показа статуса
+        function showStatus(type, message) {
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message ${type}`;
+            statusMessage.style.display = 'block';
+            
+            // Автоматически скрываем сообщение через 5 секунд
+            setTimeout(() => {
+                statusMessage.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Инициализация переключателя языка
+        document.getElementById('langEn').addEventListener('click', () => switchLanguage('en'));
+        document.getElementById('langRu').addEventListener('click', () => switchLanguage('ru'));
+        
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            createConnectionLines();
+            switchLanguage('ru');
+        });
+    </script>
+</body>
+</html>
